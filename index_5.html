@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-mode="fpa">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Gokul R Nair | FP&amp;A Analyst and Financial Data Analyst</title>
+<meta name="description" content="FP&A and financial data analyst, Bengaluru. Budgeting, rolling forecasts, budget vs. actual variance and month-end close, built on SQL Server, Power BI, Excel and Python." />
+<meta name="author" content="Gokul R Nair" />
+<meta property="og:title" content="Gokul R Nair | FP&A Analyst and Financial Data Analyst" />
+<meta property="og:description" content="Budgets, rolling forecasts, variance analysis and month-end close, built on SQL Server, Power BI, Excel and Python." />
+<meta property="og:type" content="profile" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   GOKUL R NAIR portfolio
+   Visual standard: a management reporting pack.
+   White stock, navy ink, hairline rules, tabular figures, and colour reserved
+   exclusively for signed variance (favourable / unfavourable). Nothing is
+   coloured for decoration.
+   ========================================================================== */
+
+:root{
+  --paper:#FFFFFF;
+  --paper-2:#F5F7FA;
+  --paper-3:#EDF1F6;
+  --ink:#0B1F35;
+  --ink-2:#3C5670;
+  --ink-3:#7086A0;
+  --rule:#D9E1EA;
+  --rule-2:#E9EEF4;
+  --accent:#0E4C7A;
+  --accent-soft:#E7F0F7;
+  --fav:#0F7A52;
+  --unfav:#B3283C;
+  --shadow:0 1px 2px rgba(11,31,53,.05), 0 12px 32px -20px rgba(11,31,53,.28);
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --maxw:1120px;
+}
+html[data-theme="dark"]{
+  --paper:#0C1826;
+  --paper-2:#12212F;
+  --paper-3:#182A3B;
+  --ink:#E9EFF6;
+  --ink-2:#A9BCCF;
+  --ink-3:#7A91A8;
+  --rule:#25394E;
+  --rule-2:#1C2E40;
+  --accent:#63A8DC;
+  --accent-soft:#14293C;
+  --fav:#40BC8B;
+  --unfav:#E4667C;
+  --shadow:0 16px 40px -26px rgba(0,0,0,.8);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:76px}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+p{margin:0 0 1rem}
+::selection{background:var(--accent-soft);color:var(--ink)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+
+.wrap{width:100%;max-width:var(--maxw);margin-inline:auto;padding-inline:24px}
+
+/* ---------- typography ---------- */
+h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.012em;line-height:1.15;margin:0}
+.h-sec{font-size:clamp(1.65rem,3.6vw,2.35rem);margin-bottom:.55rem}
+.eyebrow{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink-3);display:flex;align-items:center;gap:.85rem;margin:0 0 1.5rem;
+}
+.eyebrow::after{content:"";flex:1;height:1px;background:var(--rule)}
+.lede{color:var(--ink-2);max-width:64ch;font-size:1rem}
+.n{font-family:var(--mono);font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;letter-spacing:-.01em}
+.fav{color:var(--fav)}
+.unfav{color:var(--unfav)}
+
+/* ==========================================================================
+   MASTHEAD
+   ========================================================================== */
+.nav{
+  position:sticky;top:0;z-index:70;background:color-mix(in srgb,var(--paper) 90%,transparent);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--rule);
+}
+.nav-in{display:flex;align-items:center;gap:1rem;height:64px}
+.brand{display:flex;align-items:baseline;gap:.6rem;white-space:nowrap}
+.brand b{font-family:var(--serif);font-size:1.02rem;font-weight:700;letter-spacing:-.01em}
+.brand em{
+  font-family:var(--mono);font-style:normal;font-size:.66rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-3);border-left:1px solid var(--rule);padding-left:.6rem;
+}
+.nav-links{display:flex;gap:1.6rem;margin-left:auto}
+.nav-links a{font-size:.86rem;color:var(--ink-2);padding:.25rem 0;position:relative;transition:color .18s}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:0;height:1.5px;width:0;background:var(--accent);transition:width .26s ease}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a:hover::after{width:100%}
+.nav-tools{display:flex;align-items:center;gap:.5rem;margin-left:1.4rem}
+.icon-btn{
+  width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--rule);
+  border-radius:6px;color:var(--ink-2);background:var(--paper);transition:.18s;
+}
+.icon-btn:hover{color:var(--accent);border-color:var(--accent)}
+.burger{display:none}
+.panel{display:none;border-top:1px solid var(--rule);background:var(--paper-2)}
+.panel a{display:block;padding:.85rem 24px;border-bottom:1px solid var(--rule-2);font-size:.94rem}
+html.menu-open .panel{display:block}
+
+/* ---------- scenario switch (the signature control) ---------- */
+.switch{display:inline-flex;border:1px solid var(--rule);border-radius:6px;overflow:hidden;background:var(--paper)}
+.switch button{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;
+  padding:.42rem .68rem;color:var(--ink-3);transition:.2s;white-space:nowrap;
+}
+.switch button + button{border-left:1px solid var(--rule)}
+.switch button[aria-pressed="true"]{background:var(--accent);color:#fff;font-weight:600}
+
+/* ==========================================================================
+   COVER
+   ========================================================================== */
+.cover{padding:clamp(3rem,7.5vw,5.4rem) 0 clamp(2.4rem,5vw,3.4rem)}
+.status{
+  display:inline-flex;align-items:center;gap:.55rem;font-family:var(--mono);font-size:.68rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);
+  border:1px solid var(--rule);border-radius:4px;padding:.34rem .7rem;background:var(--paper-2);
+}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--fav)}
+.cover h1{
+  font-size:clamp(2.5rem,7.4vw,4.5rem);letter-spacing:-.028em;line-height:1.02;margin:1.35rem 0 .55rem;
+}
+.title-line{
+  font-family:var(--mono);font-size:clamp(.76rem,2vw,.92rem);letter-spacing:.06em;
+  color:var(--accent);text-transform:uppercase;font-weight:500;margin-bottom:1.3rem;
+}
+.cover .pitch{font-size:clamp(1rem,2.2vw,1.14rem);color:var(--ink-2);max-width:62ch;line-height:1.62}
+.cta{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1.8rem}
+.btn{
+  display:inline-flex;align-items:center;gap:.5rem;padding:.72rem 1.25rem;border-radius:6px;
+  font-size:.9rem;font-weight:600;border:1px solid var(--rule);transition:.2s;
+}
+.btn-solid{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-solid:hover{filter:brightness(1.08)}
+.btn-line:hover{border-color:var(--accent);color:var(--accent);background:var(--paper-2)}
+
+/* ---------- exhibit 1: the variance table ---------- */
+.exhibit{
+  margin-top:clamp(2.4rem,5.5vw,3.4rem);border:1px solid var(--rule);
+  background:var(--paper);box-shadow:var(--shadow);border-radius:4px;overflow:hidden;
+}
+.ex-head{
+  display:flex;justify-content:space-between;align-items:baseline;gap:1rem;flex-wrap:wrap;
+  padding:.7rem 1.15rem;border-bottom:1px solid var(--rule);background:var(--paper-2);
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);
+}
+.ex-head b{color:var(--ink);font-weight:600}
+table.ledger{width:100%;border-collapse:collapse}
+table.ledger th{
+  font-family:var(--mono);font-size:.63rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:500;text-align:left;padding:.6rem 1.15rem;border-bottom:1px solid var(--rule);
+}
+table.ledger th.r{text-align:right}
+table.ledger td{padding:.82rem 1.15rem;border-bottom:1px solid var(--rule-2);vertical-align:baseline;font-size:.92rem}
+table.ledger tr:last-child td{border-bottom:none}
+table.ledger td.metric{color:var(--ink)}
+table.ledger td.val{
+  text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;
+  font-size:1.06rem;font-weight:600;white-space:nowrap;
+}
+table.ledger td.note{color:var(--ink-3);font-size:.82rem;font-family:var(--mono)}
+
+/* ==========================================================================
+   SECTIONS
+   ========================================================================== */
+section{padding:clamp(3rem,6.5vw,4.6rem) 0;border-top:1px solid var(--rule)}
+.grid-2{display:grid;grid-template-columns:1fr;gap:2.2rem}
+@media(min-width:920px){.grid-2{grid-template-columns:1.3fr .8fr;gap:3.6rem}}
+.prose p{color:var(--ink-2)}
+.prose strong{color:var(--ink);font-weight:600}
+
+.facts{border:1px solid var(--rule);border-radius:4px;background:var(--paper-2);padding:.2rem 1.05rem;margin:0}
+.fact{display:flex;justify-content:space-between;gap:1rem;padding:.72rem 0;border-bottom:1px solid var(--rule-2)}
+.fact:last-child{border-bottom:none}
+.fact dt{font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);padding-top:.18rem}
+.fact dd{margin:0;text-align:right;font-size:.88rem;color:var(--ink)}
+
+/* ---------- competency schedule ---------- */
+.sched{border:1px solid var(--rule);border-radius:4px;overflow:hidden;background:var(--paper)}
+.sched-row{border-bottom:1px solid var(--rule-2);padding:1.15rem 1.2rem;transition:background .2s}
+.sched-row:last-child{border-bottom:none}
+.sched-row:hover{background:var(--paper-2)}
+.sched-top{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:.5rem 1rem}
+.sched-top h3{font-size:1.04rem}
+.rating{display:flex;align-items:center;gap:.55rem}
+.rating span{font-family:var(--mono);font-size:.63rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.pips{display:flex;gap:3px}
+.pips i{width:22px;height:4px;background:var(--rule);border-radius:1px;display:block}
+.pips i.on{background:var(--accent)}
+.chips{display:flex;flex-wrap:wrap;gap:.35rem;list-style:none;margin:.85rem 0 0;padding:0}
+.chips li{font-size:.79rem;color:var(--ink-2);border:1px solid var(--rule-2);background:var(--paper-2);border-radius:4px;padding:.24rem .5rem}
+.chips li.key{border-color:var(--rule);color:var(--ink);font-weight:500}
+.tier-note{font-size:.85rem;color:var(--ink-3);margin-top:1rem;font-style:italic}
+
+/* ---------- experience ---------- */
+.job{display:grid;grid-template-columns:1fr;gap:.35rem;padding:1.6rem 0;border-bottom:1px solid var(--rule-2)}
+@media(min-width:800px){.job{grid-template-columns:150px 1fr;gap:2rem}}
+.job:last-child{border-bottom:none}
+.job .when{font-family:var(--mono);font-size:.76rem;color:var(--ink-3);letter-spacing:.02em;padding-top:.3rem;white-space:nowrap}
+.job h3{font-size:1.12rem}
+.job .org{color:var(--accent);font-weight:600;font-size:.9rem;display:block;margin-top:.15rem}
+.job.muted .org{color:var(--ink-3)}
+.job ul{margin:.85rem 0 0;padding-left:1.05rem;color:var(--ink-2);font-size:.93rem}
+.job li{margin-bottom:.5rem}
+.job li::marker{color:var(--ink-3)}
+
+/* ---------- exhibits / projects ---------- */
+.exhibits{display:grid;gap:1.1rem;grid-template-columns:1fr}
+@media(min-width:1000px){.exhibits{grid-template-columns:repeat(3,1fr)}}
+.proj{
+  border:1px solid var(--rule);border-radius:4px;background:var(--paper);
+  display:flex;flex-direction:column;transition:box-shadow .25s,border-color .25s;
+}
+.proj:hover{box-shadow:var(--shadow);border-color:var(--ink-3)}
+.proj-head{padding:1.15rem 1.2rem .95rem;border-bottom:1px solid var(--rule-2)}
+.proj-ref{
+  display:flex;justify-content:space-between;align-items:center;gap:.6rem;
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);margin-bottom:.6rem;
+}
+.proj-ref .flag{border:1px solid var(--rule);border-radius:3px;padding:.16rem .4rem}
+.proj-head h3{font-size:1.06rem;line-height:1.25}
+.proj-head .stack{font-family:var(--mono);font-size:.71rem;color:var(--ink-3);margin-top:.45rem}
+.proj-body{padding:1.05rem 1.2rem;flex:1}
+.proj-body h4{
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);margin:0 0 .3rem;font-weight:500;
+}
+.proj-body p{font-size:.89rem;color:var(--ink-2);margin-bottom:.95rem}
+.proj-body p:last-child{margin-bottom:0}
+.figs{border-top:1px solid var(--rule-2);padding:.8rem 1.2rem}
+.figs div{display:flex;justify-content:space-between;gap:1rem;padding:.28rem 0;font-size:.81rem;color:var(--ink-3)}
+.figs b{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600;white-space:nowrap}
+.proj-foot{padding:.85rem 1.2rem;border-top:1px solid var(--rule-2);background:var(--paper-2)}
+.repo{font-family:var(--mono);font-size:.76rem;color:var(--accent);font-weight:500;display:inline-flex;align-items:center;gap:.4rem}
+.repo:hover{text-decoration:underline}
+
+/* ---------- education ---------- */
+.edu{display:grid;grid-template-columns:1fr;gap:0 3.2rem}
+@media(min-width:860px){.edu{grid-template-columns:1fr 1fr}}
+.edu h3.sub{
+  font-family:var(--mono);font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:500;padding-bottom:.6rem;border-bottom:1px solid var(--rule);margin-bottom:.4rem;
+}
+.edu-row{display:flex;justify-content:space-between;gap:1rem;padding:.95rem 0;border-bottom:1px solid var(--rule-2)}
+.edu-row:last-child{border-bottom:none}
+.edu-row h4{font-size:.97rem;margin:0;font-weight:600}
+.edu-row p{margin:.1rem 0 0;font-size:.83rem;color:var(--ink-3)}
+.edu-row .when{font-family:var(--mono);font-size:.74rem;color:var(--ink-3);white-space:nowrap;padding-top:.15rem}
+
+/* ---------- contact ---------- */
+.mail{
+  font-family:var(--serif);font-weight:600;letter-spacing:-.02em;
+  font-size:clamp(1.35rem,4.4vw,2.5rem);display:inline-block;margin:.5rem 0 1.5rem;
+  border-bottom:1.5px solid var(--rule);padding-bottom:.15rem;transition:.25s;word-break:break-word;
+}
+.mail:hover{color:var(--accent);border-color:var(--accent)}
+.links{display:flex;flex-wrap:wrap;gap:.65rem}
+.toast{
+  position:fixed;left:50%;bottom:26px;transform:translate(-50%,16px);opacity:0;pointer-events:none;
+  background:var(--ink);color:var(--paper);font-size:.84rem;font-weight:500;
+  padding:.6rem 1.05rem;border-radius:5px;transition:.26s;z-index:99;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+footer{
+  border-top:1px solid var(--rule);padding:1.6rem 0;font-family:var(--mono);
+  font-size:.72rem;color:var(--ink-3);
+}
+.foot-in{display:flex;flex-wrap:wrap;gap:.5rem 1.6rem;justify-content:space-between;width:100%}
+
+/* ==========================================================================
+   MODE SWAP
+   ========================================================================== */
+[data-when]{display:none}
+html[data-mode="fpa"] p[data-when="fpa"],
+html[data-mode="data"] p[data-when="data"]{display:block}
+html[data-mode="fpa"] span[data-when="fpa"],
+html[data-mode="data"] span[data-when="data"]{display:inline}
+#sk-1{order:1}#sk-2{order:2}#sk-3{order:3}#sk-4{order:4}
+.sched{display:flex;flex-direction:column}
+html[data-mode="data"] #sk-1{order:3}
+html[data-mode="data"] #sk-2{order:4}
+html[data-mode="data"] #sk-3{order:1}
+html[data-mode="data"] #sk-4{order:2}
+
+/* ==========================================================================
+   MOTION
+   ========================================================================== */
+.rise{opacity:0;transform:translateY(12px);transition:opacity .65s cubic-bezier(.2,.7,.3,1),transform .65s cubic-bezier(.2,.7,.3,1)}
+.rise.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .rise{opacity:1;transform:none;transition:none}
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media(max-width:880px){
+  .nav-links{display:none}
+  .burger{display:grid}
+  .nav-tools{margin-left:auto}
+  .brand em{display:none}
+  table.ledger th.note-col,table.ledger td.note{display:none}
+  table.ledger td.metric{font-size:.88rem}
+}
+@media(max-width:430px){
+  .btn{width:100%;justify-content:center}
+  .switch button{padding:.4rem .5rem;font-size:.6rem}
+}
+@media print{
+  .nav,.cta,.toast,.proj-foot{display:none}
+  body{background:#fff;color:#000}
+  section{page-break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== MASTHEAD ===================== -->
+<nav class="nav">
+  <div class="wrap nav-in">
+    <a href="#top" class="brand"><b>Gokul R Nair</b><em id="brand-mode">FP&amp;A</em></a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#skills">Competencies</a>
+      <a href="#work">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="nav-tools">
+      <div class="switch" role="group" aria-label="Lead with FP&amp;A or data analytics">
+        <button id="m-fpa" aria-pressed="true">FP&amp;A</button>
+        <button id="m-data" aria-pressed="false">FDA</button>
+      </div>
+      <button class="icon-btn" id="theme" aria-label="Switch to dark theme">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <button class="icon-btn burger" id="burger" aria-label="Open menu" aria-expanded="false">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="panel" id="panel">
+    <a href="#about">About</a>
+    <a href="#skills">Competencies</a>
+    <a href="#work">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#education">Education</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- ===================== COVER ===================== -->
+<header class="cover" id="top">
+  <div class="wrap">
+    <span class="status"><i class="dot"></i>Bengaluru · Open to roles &amp; relocation · Available for global hours</span>
+
+    <h1>Gokul R Nair</h1>
+    <p class="title-line">FP&amp;A Analyst &nbsp;·&nbsp; Financial Data Analyst &nbsp;·&nbsp; MBA Finance</p>
+
+    <p class="pitch" data-when="fpa">
+      I run the monthly cycle from close and consolidation through budget vs. actual and the
+      driver-based rolling forecast. I also build the SQL and Power BI layer underneath it, so the
+      pack assembles itself instead of getting rebuilt by hand every month. My models tie out. My
+      variance work tells an allocation problem apart from an overspending one, and the commentary
+      is written for the person who has to act on it.
+    </p>
+    <p class="pitch" data-when="data">
+      I build the data layer and I know what the numbers mean, because I closed the books for four
+      years before I started querying them. I type the schema explicitly, deduplicate in a view,
+      keep the raw table intact as an audit trail, and run materiality logic that cuts 4,815 rows
+      down to the eight worth a meeting.
+    </p>
+
+    <div class="cta">
+      <a class="btn btn-solid" href="mailto:mrgokulrnair@gmail.com?subject=Role%20enquiry%20%E2%80%94%20FP%26A%20%2F%20Financial%20Data%20Analyst">Email me</a>
+      <a class="btn btn-line" href="#projects">Review the projects</a>
+      <a class="btn btn-line" href="https://github.com/gokulrnair7" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
+
+    <!-- Signature: the career stated as a variance report -->
+    <div class="exhibit rise">
+      <div class="ex-head">
+        <span>Exhibit 1: <b>Track record</b></span>
+        <span>FY19 to FY26</span>
+      </div>
+      <table class="ledger">
+        <thead>
+          <tr>
+            <th scope="col">Measure</th>
+            <th scope="col" class="r">Actual</th>
+            <th scope="col" class="note-col">Basis</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="metric">Books closed after month-end</td>
+            <td class="val"><span class="count" data-to="4">0</span> days</td>
+            <td class="note">36 of 36 months at Wingspan Couture</td>
+          </tr>
+          <tr>
+            <td class="metric">Blended gross margin</td>
+            <td class="val fav"><span class="count" data-to="48">0</span>%</td>
+            <td class="note">up from 42%, on pricing and markdown</td>
+          </tr>
+          <tr>
+            <td class="metric">Reporting pack turnaround</td>
+            <td class="val fav"><span class="count" data-to="2">0</span> days</td>
+            <td class="note">down from 8 days, rebuilt in Power Query</td>
+          </tr>
+          <tr>
+            <td class="metric">Statutory late-filing penalties</td>
+            <td class="val">₹<span class="count" data-to="0">0</span></td>
+            <td class="note">3 years of GST and statutory deadlines</td>
+          </tr>
+          <tr>
+            <td class="metric">Operating expenditure analysed</td>
+            <td class="val">₹<span class="count" data-to="3758">0</span> Cr</td>
+            <td class="note">36 months · 13 departments · 4 BUs · 4 regions</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== ABOUT ===================== -->
+<section id="about">
+  <div class="wrap">
+    <p class="eyebrow">About</p>
+    <div class="grid-2">
+      <div class="prose">
+        <h2 class="h-sec">I closed books for four years, then learned to query them.</h2>
+        <p>
+          MBA in Finance with 4+ years across corporate finance and a venture-backed logistics startup.
+          At <strong>Wingspan Couture</strong> I was the finance function. As sole adviser to the
+          owner-CEO I ran close, consolidation, GST and the monthly management pack, then turned the
+          variances into pricing and markdown decisions that moved blended gross margin from 42% to 48%.
+        </p>
+        <p>
+          The reporting took eight days and I assembled it by hand every month. I rebuilt it in Power
+          Query and got it down to two. That is the short answer to why I moved toward data. I had
+          already paid for doing it the slow way.
+        </p>
+        <p>
+          Since March 2026 I have been building the technical half in public: three end-to-end projects
+          covering dataset design, SQL Server ingestion and cleaning, CTE-based analysis and Power BI
+          delivery. Two of the three run on datasets I generated myself, seeded with the faults real ERP
+          extracts carry, including nulls, duplicates, a day/month swap on import, a mid-period account
+          rename, zero-budget spend and negative credit notes. Every repository says so on the first
+          screen. Cleaning broken data is most of the work, so I wanted projects where the data was
+          actually broken.
+        </p>
+        <p data-when="fpa">
+          What I want next is an FP&amp;A or business finance seat where the forecast is
+          driver-based, someone acts on the variance commentary, and nobody rebuilds the pack by hand.
+        </p>
+        <p data-when="data">
+          What I want next is an analytics seat close to finance, where knowing what an open period
+          or a credit note does to a headline number counts for more than another dashboard.
+        </p>
+      </div>
+
+      <dl class="facts rise">
+        <div class="fact"><dt>Location</dt><dd>HSR Layout, Bengaluru 560102</dd></div>
+        <div class="fact"><dt>Experience</dt><dd>4+ years, finance &amp; analytics</dd></div>
+        <div class="fact"><dt>Education</dt><dd>MBA in Finance and Marketing</dd></div>
+        <div class="fact"><dt>Core stack</dt><dd>Excel · SQL Server · Power BI · Python</dd></div>
+        <div class="fact"><dt>Availability</dt><dd>Immediate · open to relocation</dd></div>
+        <div class="fact"><dt>Working hours</dt><dd>Late-evening calls, US &amp; EMEA</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== COMPETENCIES ===================== -->
+<section id="skills">
+  <div class="wrap">
+    <p class="eyebrow">Competencies</p>
+    <h2 class="h-sec">Rated at the level I can defend in an interview.</h2>
+    <p class="lede" style="margin-bottom:1.9rem">
+      Three ratings, applied honestly. Owned means years of production responsibility. Applied means
+      I have shipped it end to end in a documented build. Developing means real capability that I
+      picked up recently.
+    </p>
+
+    <div class="sched">
+      <div class="sched-row rise" id="sk-1">
+        <div class="sched-top">
+          <h3>Planning &amp; analysis</h3>
+          <div class="rating"><span>Owned</span><div class="pips"><i class="on"></i><i class="on"></i><i class="on"></i></div></div>
+        </div>
+        <ul class="chips">
+          <li class="key">Budgeting &amp; rolling forecasts</li>
+          <li class="key">Budget vs. actual variance &amp; commentary</li>
+          <li class="key">Month-end close &amp; consolidation</li>
+          <li>Driver-based forecasting</li>
+          <li>Scenario &amp; sensitivity analysis</li>
+          <li>Working capital management</li>
+          <li>Gross margin &amp; pricing analysis</li>
+          <li>Contribution margin</li>
+          <li>KPI design &amp; tracking</li>
+          <li>Business partnering</li>
+        </ul>
+      </div>
+
+      <div class="sched-row rise" id="sk-2">
+        <div class="sched-top">
+          <h3>Financial modelling &amp; Excel</h3>
+          <div class="rating"><span>Owned</span><div class="pips"><i class="on"></i><i class="on"></i><i class="on"></i></div></div>
+        </div>
+        <ul class="chips">
+          <li class="key">3-statement integrated modelling</li>
+          <li class="key">Power Query / M</li>
+          <li class="key">XLOOKUP · INDEX/MATCH</li>
+          <li>Base / Bull / Bear scenario switches</li>
+          <li>Data tables &amp; sensitivity</li>
+          <li>FORECAST.ETS</li>
+          <li>Variance bridges</li>
+          <li>PivotTables</li>
+          <li>Tally Prime</li>
+        </ul>
+      </div>
+
+      <div class="sched-row rise" id="sk-3">
+        <div class="sched-top">
+          <h3>SQL &amp; data preparation</h3>
+          <div class="rating"><span>Applied</span><div class="pips"><i class="on"></i><i class="on"></i><i></i></div></div>
+        </div>
+        <ul class="chips">
+          <li class="key">T-SQL on SQL Server and SSMS</li>
+          <li class="key">CTEs &amp; window functions</li>
+          <li class="key">Deduplication &amp; data quality</li>
+          <li>Explicit schema typing</li>
+          <li>Star-schema joins</li>
+          <li>Views &amp; audit trails</li>
+          <li>Materiality &amp; threshold logic</li>
+          <li>Git &amp; GitHub</li>
+        </ul>
+      </div>
+
+      <div class="sched-row rise" id="sk-4">
+        <div class="sched-top">
+          <h3>Business intelligence &amp; Python</h3>
+          <div class="rating"><span>Applied</span><div class="pips"><i class="on"></i><i class="on"></i><i></i></div></div>
+        </div>
+        <ul class="chips">
+          <li class="key">Power BI DAX time intelligence</li>
+          <li class="key">Star-schema data modelling</li>
+          <li class="key">Python with pandas and NumPy</li>
+          <li>CALCULATE &amp; measure design</li>
+          <li>Synced slicers, cross-filtering</li>
+          <li>Direct SQL connections</li>
+          <li>Data generation &amp; cleaning</li>
+          <li>VS Code</li>
+        </ul>
+      </div>
+    </div>
+    <p class="tier-note">
+      Python is rated Applied rather than Owned because I use it for dataset generation, cleaning
+      and preparation, not for production pipelines. I am working through Power BI financial
+      reporting and DAX in more depth.
+    </p>
+  </div>
+</section>
+
+<!-- ===================== EXPERIENCE ===================== -->
+<section id="work">
+  <div class="wrap">
+    <p class="eyebrow">Experience</p>
+    <h2 class="h-sec">Where the numbers came from.</h2>
+
+    <div style="margin-top:1.8rem">
+      <article class="job rise">
+        <div class="when">03/2026 to present</div>
+        <div>
+          <h3>Independent analytics project work</h3>
+          <span class="org">Self-directed</span>
+          <ul>
+            <li>Designed, built and published three end-to-end projects covering dataset design, ingestion, cleaning, analysis and dashboard delivery, alongside structured coursework in Power BI financial reporting and financial modelling.</li>
+            <li>Documented the limitations of each build inside the repository, including the point where a forecast balance check stops being a validation and becomes an arithmetic identity.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="job rise">
+        <div class="when">09/2022 to 02/2026</div>
+        <div>
+          <h3>Accountant, Finance and Business Analysis</h3>
+          <span class="org">Wingspan Couture</span>
+          <ul>
+            <li>Ran the full monthly close and consolidation, covering sales, purchases, GST returns and bank reconciliations. Closed within <b class="n">4 days</b> of month-end with zero late-filing penalties over three years, handling confidential P&amp;L, payroll and tax data throughout.</li>
+            <li>Acted as sole finance adviser to the owner-CEO, producing monthly P&amp;L, gross margin, inventory ageing and working capital packs. Turned month-over-month variances into pricing and markdown strategy that lifted blended gross margin from <b class="n">42%</b> to <b class="n fav">48%</b>.</li>
+            <li>Rebuilt the reporting process in Excel Power Query, replacing manual consolidation of sales, purchase and inventory data and cutting pack turnaround from <b class="n">8 days to 2</b>. Worked with store operations and custom tailoring to align purchase planning to actual sell-through.</li>
+            <li>Analysed category-level sell-through and inventory ageing across four seasonal cycles to find slow-moving stock and release working capital locked in dead inventory.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="job muted rise">
+        <div class="when">07/2019 to 08/2022</div>
+        <div>
+          <h3>Career break</h3>
+          <span class="org">Full-time UPSC Civil Services preparation</span>
+        </div>
+      </article>
+
+      <article class="job rise">
+        <div class="when">06/2018 to 05/2019</div>
+        <div>
+          <h3>Management Trainee</h3>
+          <span class="org">ElasticRun</span>
+          <ul>
+            <li>Worked with large operational datasets across routes and vendors in a rapidly scaling venture-backed startup, consolidating sales and delivery data to find bottlenecks and cost drivers.</li>
+            <li>Built Excel dashboards on route and vendor level operating KPIs that supported weekly performance reviews and route-allocation decisions, working alongside supply chain and operations under shifting priorities.</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PROJECTS ===================== -->
+<section id="projects">
+  <div class="wrap">
+    <p class="eyebrow">Selected projects</p>
+    <h2 class="h-sec">Three builds, every assumption on the record.</h2>
+    <p class="lede" style="margin-bottom:1.9rem">
+      Each project runs from raw data through to a recommendation. Where I generated the dataset
+      instead of sourcing it, the card and the repository both say so.
+    </p>
+
+    <div class="exhibits">
+
+      <!-- 01 -->
+      <article class="proj rise">
+        <div class="proj-head">
+          <div class="proj-ref"><span>Exhibit 2</span><span class="flag">Generated dataset</span></div>
+          <h3>Budget vs. actual variance analysis</h3>
+          <p class="stack">Python · SQL Server · Excel · Power BI</p>
+        </div>
+        <div class="proj-body">
+          <h4>Problem</h4>
+          <p>A business closes 4% over budget on ₹3,758 Cr of operating expenditure. That looks tolerable, so nobody digs further.</p>
+          <h4>Approach</h4>
+          <p>Built the pipeline across 36 months, 13 departments and 14 cost categories. The dataset was generated in Python carrying the faults real ERP extracts have, then loaded into SQL Server under an explicitly typed schema and cleaned with ROW_NUMBER deduplication and a DATEFROMPARTS repair of a day/month swap. The raw table stays intact as an audit trail. Nine CTE-based queries feed an Excel variance bridge and a Power BI dashboard whose DAX replicates the SQL open-period exclusion. Without that exclusion the headline reads 0.56% instead of 4.01%.</p>
+          <h4>Finding</h4>
+          <p>The 4% was a net figure. ₹239.7 Cr of overspend sat against ₹88.9 Cr of underspend, which puts absolute variance at 8.7% of budget. The business had an allocation problem rather than an overspending one. Two of the largest variances turned out to be single events instead of trends, which only showed up because each cost line was compared to its own monthly average rather than sorted by size.</p>
+        </div>
+        <div class="figs">
+          <div><span>Budgeted opex</span><b>₹3,758 Cr</b></div>
+          <div><span>Overspend</span><b class="unfav">(₹239.7 Cr)</b></div>
+          <div><span>Underspend</span><b class="fav">₹88.9 Cr</b></div>
+          <div><span>Net vs. absolute variance</span><b>4.0% / 8.7%</b></div>
+          <div><span>Rows after materiality filter</span><b>4,815 → 8</b></div>
+        </div>
+        <div class="proj-foot">
+          <span class="repo" style="color:var(--ink-3)">Repository publishing shortly</span>
+        </div>
+      </article>
+
+      <!-- 02 -->
+      <article class="proj rise">
+        <div class="proj-head">
+          <div class="proj-ref"><span>Exhibit 3</span><span class="flag">Generated dataset</span></div>
+          <h3>Revenue &amp; profitability analysis</h3>
+          <p class="stack">SQL Server · Excel · Power BI</p>
+        </div>
+        <div class="proj-body">
+          <h4>Problem</h4>
+          <p>A multi-channel apparel retailer discounts to move stock and needs to know where discounting stops paying for itself.</p>
+          <h4>Approach</h4>
+          <p>Worked roughly 9,600 order lines at transaction level in SQL using LAG, RANK and ROW_NUMBER, standardising category labels, removing duplicates and keeping returns as negative values instead of deleting them. That view feeds six downstream analyses. On top of it sits a two-page Power BI dashboard built on a dedicated date table, with explicit YoY and MoM measures and slicers synced across category, region and channel, plus an Excel layer carrying a FORECAST.ETS seasonal projection and three discount scenarios.</p>
+          <h4>Finding</h4>
+          <p>Gross margin holds near 45% at full price and falls to 9.5% once discounting passes 30%, and most of that sits in end-of-season events. Footwear is the second largest category by revenue at ₹41.6 lakh and the lowest margin of the majors at 30.4%. At roughly 28% opex, a three-point margin move swings operating profit by about 45%.</p>
+        </div>
+        <div class="figs">
+          <div><span>Net revenue modelled</span><b>₹1.80 Cr</b></div>
+          <div><span>Order lines</span><b>~9,600</b></div>
+          <div><span>Margin at full price</span><b class="fav">~45%</b></div>
+          <div><span>Margin beyond 30% discount</span><b class="unfav">9.5%</b></div>
+          <div><span>3-pt margin move, at 28% opex</span><b>±45% op. profit</b></div>
+        </div>
+        <div class="proj-foot">
+          <a class="repo" href="https://github.com/gokulrnair7/vastra-junction-revenue-profitability" target="_blank" rel="noopener noreferrer">Open repository ↗</a>
+        </div>
+      </article>
+
+      <!-- 03 -->
+      <article class="proj rise">
+        <div class="proj-head">
+          <div class="proj-ref"><span>Exhibit 4</span><span class="flag">Public filings</span></div>
+          <h3>Integrated 3-statement model &amp; scenario engine</h3>
+          <p class="stack">Advanced Excel · Mphasis Ltd.</p>
+        </div>
+        <div class="proj-body">
+          <h4>Problem</h4>
+          <p>Historical statements tell you what happened. They do not tell you what happens if growth slows or margins compress.</p>
+          <h4>Approach</h4>
+          <p>Rebuilt the FY24 to FY26 consolidated financials as a linked income statement, balance sheet and cash flow, tied to the audited FY26 annual report, with the historical balance check landing at 0.00. The model then extends into an FY27 to FY29 driver-based forecast with a CHOOSE/MATCH Base, Bull and Bear switch that flows revenue growth, margin and working capital assumptions through all three statements at once.</p>
+          <h4>Finding</h4>
+          <p>The business consumes cash as it grows. I documented six limitations explicitly, including the fact that forecast cash acts as a balancing plug, which makes the forecast-period balance check an arithmetic identity rather than a validation. The historical tie-out is the real check, and the model says so in writing.</p>
+        </div>
+        <div class="figs">
+          <div><span>Historical balance check</span><b class="fav">0.00</b></div>
+          <div><span>Historical period</span><b>FY24 to FY26</b></div>
+          <div><span>Forecast horizon</span><b>FY27 to FY29</b></div>
+          <div><span>Forecast assumptions</span><b>8</b></div>
+          <div><span>Limitations documented</span><b>6</b></div>
+        </div>
+        <div class="proj-foot">
+          <a class="repo" href="https://github.com/gokulrnair7/integrated-3-statement-financial-model-mphasis" target="_blank" rel="noopener noreferrer">Open repository ↗</a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== EDUCATION ===================== -->
+<section id="education">
+  <div class="wrap">
+    <p class="eyebrow">Education &amp; certifications</p>
+    <h2 class="h-sec">Credentials.</h2>
+    <div class="edu" style="margin-top:1.8rem">
+      <div>
+        <h3 class="sub">Education</h3>
+        <div class="edu-row rise">
+          <div>
+            <h4>Master of Business Administration in Finance and Marketing</h4>
+            <p>MACFAST, Mahatma Gandhi University</p>
+          </div>
+          <span class="when">2016 to 2018</span>
+        </div>
+        <div class="edu-row rise">
+          <div>
+            <h4>B.Com in Computer Applications</h4>
+            <p>Mahatma Gandhi University</p>
+          </div>
+          <span class="when">2013 to 2016</span>
+        </div>
+      </div>
+      <div>
+        <h3 class="sub">Certifications</h3>
+        <div class="edu-row rise">
+          <div>
+            <h4>Excel for Finance &amp; FP&amp;A: Analysis, Forecasting, Modelling</h4>
+            <p>Udemy</p>
+          </div>
+        </div>
+        <div class="edu-row rise">
+          <div>
+            <h4>Power BI Financial Reporting &amp; Financial Analysis: A to Z</h4>
+            <p>Udemy</p>
+          </div>
+        </div>
+        <div class="edu-row rise">
+          <div>
+            <h4>AI Fluency: Framework and Foundations, plus Introduction to Claude Cowork</h4>
+            <p>Anthropic</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section id="contact">
+  <div class="wrap">
+    <p class="eyebrow">Contact</p>
+    <h2 class="h-sec">If you are hiring, email me.</h2>
+    <p class="lede">
+      I am open to FP&amp;A, business finance and financial data analyst roles in Bengaluru, remote or
+      on relocation, and I am available for late-evening calls with US and EMEA teams.
+    </p>
+    <a class="mail" href="mailto:mrgokulrnair@gmail.com?subject=Role%20enquiry%20%E2%80%94%20FP%26A%20%2F%20Financial%20Data%20Analyst">mrgokulrnair@gmail.com</a>
+    <div class="links">
+      <button class="btn btn-solid" id="copy">Copy email address</button>
+      <a class="btn btn-line" href="https://www.linkedin.com/in/gokulrnair7/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a class="btn btn-line" href="https://github.com/gokulrnair7" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-in">
+    <span>© <span id="yr">2026</span> Gokul R Nair · HSR Layout, Bengaluru 560102</span>
+    <span>Project datasets are generated where stated. Every figure is reproducible from the repositories.</span>
+  </div>
+</footer>
+
+<div class="toast" id="toast">Email address copied</div>
+
+<script>
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.getElementById("yr").textContent = new Date().getFullYear();
+
+  /* theme */
+  var themeBtn = document.getElementById("theme");
+  themeBtn.addEventListener("click", function () {
+    var next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+    root.setAttribute("data-theme", next);
+    themeBtn.setAttribute("aria-label", "Switch to " + (next === "light" ? "dark" : "light") + " theme");
+  });
+
+  /* scenario switch */
+  var bFpa = document.getElementById("m-fpa");
+  var bData = document.getElementById("m-data");
+  var brandMode = document.getElementById("brand-mode");
+  function setMode(mode) {
+    root.setAttribute("data-mode", mode);
+    bFpa.setAttribute("aria-pressed", String(mode === "fpa"));
+    bData.setAttribute("aria-pressed", String(mode === "data"));
+    brandMode.innerHTML = mode === "fpa" ? "FP&amp;A" : "Data";
+  }
+  bFpa.addEventListener("click", function () { setMode("fpa"); });
+  bData.addEventListener("click", function () { setMode("data"); });
+
+  /* mobile menu */
+  var burger = document.getElementById("burger");
+  burger.addEventListener("click", function () {
+    var open = root.classList.toggle("menu-open");
+    burger.setAttribute("aria-expanded", String(open));
+  });
+  Array.prototype.forEach.call(document.querySelectorAll("#panel a"), function (a) {
+    a.addEventListener("click", function (ev) {
+      var target = document.querySelector(a.getAttribute("href"));
+      root.classList.remove("menu-open");
+      burger.setAttribute("aria-expanded", "false");
+      if (!target) return;
+      /* The panel sits inside the sticky masthead. Collapsing it shortens the
+         header, so a native anchor jump computed before the collapse lands
+         short by the panel height. Scroll on the next frame instead. */
+      ev.preventDefault();
+      requestAnimationFrame(function () {
+        target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+        history.replaceState(null, "", a.getAttribute("href"));
+      });
+    });
+  });
+
+  /* copy email */
+  var toast = document.getElementById("toast");
+  document.getElementById("copy").addEventListener("click", function () {
+    var mail = "mrgokulrnair@gmail.com";
+    function done() {
+      toast.classList.add("show");
+      setTimeout(function () { toast.classList.remove("show"); }, 1900);
+    }
+    function fallback() {
+      var t = document.createElement("textarea");
+      t.value = mail; t.setAttribute("readonly", "");
+      t.style.position = "absolute"; t.style.left = "-9999px";
+      document.body.appendChild(t); t.select();
+      try { document.execCommand("copy"); done(); } catch (e) {}
+      document.body.removeChild(t);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(mail).then(done).catch(fallback);
+    } else { fallback(); }
+  });
+
+  /* reveal */
+  var risers = document.querySelectorAll(".rise");
+  if (reduce || !("IntersectionObserver" in window)) {
+    Array.prototype.forEach.call(risers, function (el) { el.classList.add("in"); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var sibs = Array.prototype.slice.call(e.target.parentNode.children);
+        e.target.style.transitionDelay = Math.min(sibs.indexOf(e.target), 5) * 65 + "ms";
+        e.target.classList.add("in");
+        io.unobserve(e.target);
+      });
+    }, { threshold: 0.1, rootMargin: "0px 0px -8% 0px" });
+    Array.prototype.forEach.call(risers, function (el) { io.observe(el); });
+  }
+
+  /* count-up on Exhibit 1 */
+  var counters = document.querySelectorAll(".count");
+  function run(el) {
+    var to = parseFloat(el.getAttribute("data-to"));
+    if (reduce || to === 0) { el.textContent = to.toLocaleString("en-IN"); return; }
+    var start = null, dur = 1000;
+    function step(ts) {
+      if (!start) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))).toLocaleString("en-IN");
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  if (!("IntersectionObserver" in window)) {
+    Array.prototype.forEach.call(counters, run);
+  } else {
+    var co = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { run(e.target); co.unobserve(e.target); }
+      });
+    }, { threshold: 0.5 });
+    Array.prototype.forEach.call(counters, function (el) { co.observe(el); });
+  }
+
+  /* active nav */
+  var sections = document.querySelectorAll("section[id]");
+  var navLinks = document.querySelectorAll(".nav-links a");
+  if ("IntersectionObserver" in window) {
+    var so = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        Array.prototype.forEach.call(navLinks, function (a) {
+          a.style.color = a.getAttribute("href") === "#" + e.target.id ? "var(--ink)" : "var(--ink-2)";
+        });
+      });
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    Array.prototype.forEach.call(sections, function (s) { so.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>
