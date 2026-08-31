@@ -346,9 +346,9 @@ html[data-mode="data"] #sk-4{order:2}
       <a href="#contact">Contact</a>
     </div>
     <div class="nav-tools">
-      <div class="switch" role="group" aria-label="Lead with FP&amp;A or data analytics">
+      <div class="switch" role="group" aria-label="Lead with FP&amp;A or data and BI">
         <button id="m-fpa" aria-pressed="true">FP&amp;A</button>
-        <button id="m-data" aria-pressed="false">FDA</button>
+        <button id="m-data" aria-pressed="false">Data &amp; BI</button>
       </div>
       <button class="icon-btn" id="theme" aria-label="Switch to dark theme">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -833,7 +833,7 @@ html[data-mode="data"] #sk-4{order:2}
     root.setAttribute("data-mode", mode);
     bFpa.setAttribute("aria-pressed", String(mode === "fpa"));
     bData.setAttribute("aria-pressed", String(mode === "data"));
-    brandMode.innerHTML = mode === "fpa" ? "FP&amp;A" : "Data";
+    brandMode.innerHTML = mode === "fpa" ? "FP&amp;A" : "Data &amp; BI";
   }
   bFpa.addEventListener("click", function () { setMode("fpa"); });
   bData.addEventListener("click", function () { setMode("data"); });
