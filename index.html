@@ -133,6 +133,7 @@ html.menu-open .panel{display:block}
   border:1px solid var(--rule);border-radius:4px;padding:.34rem .7rem;background:var(--paper-2);
 }
 .dot{width:6px;height:6px;border-radius:50%;background:var(--fav)}
+   .headshot{width:96px;height:96px;border-radius:50%;object-fit:cover;border:1px solid var(--rule);margin:0 0 1.1rem;display:block}
 .cover h1{
   font-size:clamp(2.5rem,7.4vw,4.5rem);letter-spacing:-.028em;line-height:1.02;margin:1.35rem 0 .55rem;
 }
@@ -313,6 +314,7 @@ html[data-mode="data"] #sk-4{order:2}
    RESPONSIVE
    ========================================================================== */
 @media(max-width:880px){
+  .headshot{width:76px;height:76px}
   .nav-links{display:none}
   .burger{display:grid}
   .nav-tools{margin-left:auto}
@@ -373,7 +375,7 @@ html[data-mode="data"] #sk-4{order:2}
   <div class="wrap">
     <span class="status"><i class="dot"></i>Bengaluru · Open to roles &amp; relocation · Available for global hours</span>
 
-    <h1>Gokul R Nair</h1>
+     h1: <img src="photo.png" alt="Gokul R Nair" class="headshot">
         <p class="title-line" data-when="fpa">FP&amp;A Analyst &nbsp;·&nbsp; MBA Finance</p>
     <p class="title-line" data-when="data">Data &amp; BI Analyst &nbsp;·&nbsp; MBA Finance</p>
 
