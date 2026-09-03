@@ -133,7 +133,14 @@ html.menu-open .panel{display:block}
   border:1px solid var(--rule);border-radius:4px;padding:.34rem .7rem;background:var(--paper-2);
 }
 .dot{width:6px;height:6px;border-radius:50%;background:var(--fav)}
-   .headshot{width:96px;height:96px;border-radius:50%;object-fit:cover;border:1px solid var(--rule);margin:0 0 1.1rem;display:block}
+   .cover-head{display:flex;align-items:center;justify-content:space-between;gap:2rem;margin:1.35rem 0 1.3rem}
+.cover-head h1{margin:0 0 .55rem}
+.cover-head .title-line{margin:0}
+.headshot{width:130px;height:130px;border-radius:50%;object-fit:cover;border:1px solid var(--rule);flex-shrink:0}
+@media(max-width:700px){
+  .cover-head{flex-direction:column-reverse;align-items:flex-start;gap:1.2rem}
+  .headshot{width:88px;height:88px}
+}
 .cover h1{
   font-size:clamp(2.5rem,7.4vw,4.5rem);letter-spacing:-.028em;line-height:1.02;margin:1.35rem 0 .55rem;
 }
@@ -375,9 +382,14 @@ html[data-mode="data"] #sk-4{order:2}
   <div class="wrap">
     <span class="status"><i class="dot"></i>Bengaluru · Open to roles &amp; relocation · Available for global hours</span>
 
-     h1: <img src="photo.png" alt="Gokul R Nair" class="headshot">
+       <div class="cover-head">
+      <div>
+        <h1>Gokul R Nair</h1>
         <p class="title-line" data-when="fpa">FP&amp;A Analyst &nbsp;·&nbsp; MBA Finance</p>
-    <p class="title-line" data-when="data">Data &amp; BI Analyst &nbsp;·&nbsp; MBA Finance</p>
+        <p class="title-line" data-when="data">Data &amp; BI Analyst &nbsp;·&nbsp; MBA Finance</p>
+      </div>
+      <img src="photo.png" alt="Gokul R Nair" class="headshot">
+    </div>
 
     <p class="pitch" data-when="fpa">
       I run the monthly cycle from close and consolidation through budget vs. actual and the
@@ -453,7 +465,7 @@ html[data-mode="data"] #sk-4{order:2}
       <div class="prose">
         <h2 class="h-sec">I closed books for four years, then learned to query them.</h2>
         <p>
-          MBA in Finance with 4+ years across corporate finance and a venture-backed logistics startup.
+          MBA in Finance with 4+ years across corporate finance and a venture-backed startup.
           At <strong>Wingspan Couture</strong> I was the finance function. As sole adviser to the
           owner-CEO I ran close, consolidation, GST and the monthly management pack, then turned the
           variances into pricing and markdown decisions that moved blended gross margin from 42% to 48%.
